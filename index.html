@@ -1,4 +1,27 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<script>
+  /* =====================================================================
+     CONFIGURAÇÃO DO SUPABASE — edite só as duas linhas abaixo.
+     Onde achar: Supabase → Project Settings → API (ou botão "Connect").
+       url     = Project URL        (ex.: https://abcd1234.supabase.co)
+       anonKey = chave anon/public  (começa com eyJ... ou sb_publishable_...)
+     Deixe as duas vazias ("") para usar o app só neste aparelho, sem login na nuvem.
+     NUNCA cole aqui a chave service_role: este arquivo é público.
+     ===================================================================== */
+  window.CTFC_CLOUD = {
+    url: '',
+    anonKey: ''
+  };
+</script>
+<meta name="description" content="Flashcards de revisão para a prova de R+ Clínica Médica da UERJ, com revisão espaçada FSRS-5.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js"></script>
 <title>Flashcards CT dos Acadêmicos</title>
 <script>(function(){var d=document.documentElement;try{var t=localStorage.getItem('ctfc:theme');d.setAttribute('data-theme',t==='light'?'light':'dark');if(localStorage.getItem('ctfc:sess'))d.classList.add('logged');}catch(e){d.setAttribute('data-theme','dark');}})();</script>
 <meta name="theme-color" content="#0f1b30">
@@ -405,6 +428,8 @@ kbd{font-family:inherit;font-size:.7rem;padding:.08em .4em;border-radius:5px;bor
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 
+</head>
+<body>
 <template id="logo-tpl"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><rect x="12" y="7" width="24" height="32" rx="4" fill="#ffffff" stroke="rgba(15,27,48,.25)" stroke-width="1" transform="rotate(-16 24 24)"/><rect x="12" y="8" width="24" height="32" rx="4" fill="#3d85d8" transform="rotate(-5 24 24)"/><rect x="13" y="9" width="24" height="32" rx="4" fill="#d9aa4a" stroke="#0f1b30" stroke-width="1" transform="rotate(7 24 24)"/><text x="25" y="30" text-anchor="middle" font-family="Poppins,Arial,sans-serif" font-weight="800" font-size="13" fill="#0f1b30" transform="rotate(7 24 24)">CT</text></svg></template>
 
 <!-- Landing (pinta antes do script) -->
@@ -2021,4 +2046,7 @@ ACT.kbReset = async () => {
 ;boot();
 
 </script>
-</body></html>
+
+<script>if('serviceWorker' in navigator&&location.protocol==='https:'){addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}</script>
+</body>
+</html>

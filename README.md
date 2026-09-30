@@ -1,95 +1,61 @@
-# Flashcards CT dos Acadêmicos — UERJ R+ CM
+# Flashcards CT dos Acadêmicos — UERJ R+ CM (versão arquivo único)
 
-Web app de flashcards para a prova de R+ Clínica Médica da UERJ: 441 cartas em 11 temas, revisão espaçada FSRS-5, plano de estudo, estatísticas, sequência e troféus. Funciona como PWA (instala na tela inicial do celular e abre offline) e sincroniza o progresso entre aparelhos pelo Supabase.
+O app inteiro está no `index.html`. Não tem build: a Vercel só publica os arquivos como estão.
 
-- **Sem Supabase configurado**: o app roda 100% no aparelho (localStorage).
-- **Com Supabase**: login por e-mail e senha; o progresso de cada conta fica na nuvem e aparece em qualquer aparelho.
-
----
-
-## 1. Supabase (≈ 5 min)
+## 1. Supabase
 
 1. Crie um projeto em <https://supabase.com/dashboard>.
-2. **Tabela**: abra **SQL Editor → New query**, cole o conteúdo de `supabase/migrations/20260930120000_progresso.sql` e clique em **Run**.
-   (Com a CLI do Supabase: `supabase link --project-ref SEU_REF` e `supabase db push`.)
-3. **Login por e-mail**: em **Authentication → Sign In / Providers**, deixe **Email** ativado.
-   - **Confirm email** ligado (padrão): o aluno precisa clicar no link do e-mail antes de entrar. O app avisa isso na tela.
-   - Para uso pessoal, pode desligar: a conta entra direto após o cadastro.
-4. **URL do site** (depois do passo 3): em **Authentication → URL Configuration**, coloque em **Site URL** o endereço da Vercel (ex.: `https://flashcards-ct.vercel.app`). É para onde o link de confirmação leva.
-5. **Chaves**: em **Project Settings → API** (ou botão **Connect**), copie:
-   - **Project URL** → `SUPABASE_URL`
-   - **anon / publishable key** → `SUPABASE_ANON_KEY`
+2. **SQL Editor → New query**: cole o conteúdo de `supabase/progresso.sql` e clique em **Run**. Isso cria a tabela `progresso`, onde cada conta só lê e grava o próprio progresso.
+3. **Authentication → Sign In / Providers**: deixe **Email** ativado.
+   - Com **Confirm email** ligado, o aluno precisa clicar no link do e-mail antes de entrar.
+   - Para uso pessoal, pode desligar: a conta entra direto.
+4. **Project Settings → API** (ou botão **Connect**): copie a **Project URL** e a chave **anon / publishable**.
 
-> A chave anon pode ficar pública: a segurança vem das políticas RLS (cada usuário só lê e grava a própria linha). **Nunca** use a chave `service_role` no app.
+## 2. Colocar a URL e a chave no `index.html` (pelo GitHub)
 
-## 2. GitHub
+1. No repositório do GitHub, abra `index.html` e clique no lápis (**Edit this file**).
+2. Logo no começo do arquivo está este bloco:
 
-```bash
-cd flashcards-ct
-git init
-git add .
-git commit -m "Flashcards CT — UERJ R+ CM"
-git branch -M main
-git remote add origin https://github.com/SEU-USUARIO/flashcards-ct.git
-git push -u origin main
-```
+   ```js
+   window.CTFC_CLOUD = {
+     url: '',
+     anonKey: ''
+   };
+   ```
 
-O `.gitignore` já deixa de fora `public/` (gerado no build), `node_modules/` e `.env`.
+3. Cole os valores entre as aspas:
 
-## 3. Vercel
+   ```js
+   window.CTFC_CLOUD = {
+     url: 'https://abcd1234.supabase.co',
+     anonKey: 'eyJhbGciOi...'
+   };
+   ```
 
-1. <https://vercel.com/new> → **Import** o repositório do GitHub.
-2. **Framework Preset**: *Other*. Build, install e pasta de saída já vêm do `vercel.json` (`node tools/build_app.js --web` → `public/`). Não há dependências para instalar.
-3. **Environment Variables**: adicione `SUPABASE_URL` e `SUPABASE_ANON_KEY` (Production e Preview).
-4. **Deploy**. O log do build mostra `Supabase ATIVO (...)` quando as variáveis foram lidas.
-5. Volte ao Supabase e ponha a URL da Vercel em **Site URL** (passo 1.4).
+4. **Commit changes**. A Vercel publica a nova versão sozinha em alguns segundos.
 
-Se mudar as variáveis depois, faça **Redeploy**: elas entram no build.
+Deixando os dois campos vazios, o app funciona só no aparelho, sem login na nuvem.
+
+> A chave anon pode ficar pública no arquivo: quem protege os dados são as políticas do SQL. **Nunca** cole a chave `service_role`.
+
+## 3. GitHub e Vercel
+
+1. Crie um repositório no GitHub e suba todos os arquivos desta pasta (dá para arrastar pelo site: **Add file → Upload files**).
+2. Em <https://vercel.com/new>, importe o repositório. **Framework Preset: Other**, sem comando de build. Clique em **Deploy**.
+3. Volte ao Supabase, em **Authentication → URL Configuration**, e coloque o endereço da Vercel em **Site URL** (é para onde o link de confirmação leva).
 
 ## 4. Instalar no celular
 
-- **iPhone**: abra o endereço no Safari → Compartilhar → **Adicionar à Tela de Início**.
+- **iPhone**: Safari → Compartilhar → **Adicionar à Tela de Início**.
 - **Android**: Chrome → menu → **Instalar app**.
 
-O app abre offline. Sem internet, o progresso fica no aparelho e é enviado quando a conexão volta (o Perfil mostra o estado: *Sincronizado*, *Sincronizando…* ou *Sem conexão*).
+## Arquivos
 
----
-
-## Como funciona a sincronização
-
-- Tabela `public.progresso`: uma linha por usuário (`user_id`, `dados` em JSON, `atualizado_em`).
-- `dados` guarda tudo: estado FSRS de cada carta, histórico diário, plano, troféus, favoritos, listas e baralhos próprios.
-- Cada resposta salva no aparelho na hora e envia para a nuvem após 1,5 s (agrupa várias respostas seguidas).
-- Ao entrar ou voltar para o app, ele compara as duas versões e fica com a **mais recente** (última gravação vence). Evite estudar ao mesmo tempo em dois aparelhos sem internet.
-- Atalhos de teclado e tema claro/escuro ficam só no aparelho.
-
-## Estrutura
-
-| Pasta/arquivo | O que é |
+| Arquivo | O que é |
 |---|---|
-| `content/*.js` | Conteúdo: um arquivo por tema (fonte da verdade das cartas) |
-| `tools/gen_uerj.js` | Monta `src/decks.json` a partir de `content/` |
-| `src/shell.html` | CSS + telas estáticas (landing, login) |
-| `src/logic.js` | Lógica do app (FSRS-5, plano, streak, busca, nuvem) |
-| `src/decks.json` | Conteúdo montado (vai embutido no HTML) |
-| `tools/build_app.js` | `--web` → `public/` (Vercel) · sem flag → `dist/` (artifact) |
-| `web/` | Manifest, service worker, ícones e `vendor/supabase.js` (supabase-js 2.x, sem CDN) |
-| `supabase/migrations/` | SQL da tabela e das políticas RLS |
-| `tests/` | Testes Playwright (inclui o modo nuvem com Supabase simulado) |
+| `index.html` | O app completo (441 flashcards); configuração do Supabase no topo |
+| `supabase/progresso.sql` | Tabela e regras de segurança do progresso |
+| `manifest.webmanifest`, `sw.js`, `icon-*.png`, `apple-touch-icon.png` | Instalação como app e funcionamento offline |
+| `vercel.json` | Cabeçalhos de cache para a Vercel |
 
-## Editar o conteúdo
-
-1. Edite o tema em `content/<tema>.js`. Cada carta é `C('chave', ano, 'frente', 'verso', 'macete opcional')`.
-   **Não mude a chave de uma carta existente**: ela é a identidade do progresso.
-2. `npm run conteudo` (gera `src/decks.json`) e `npm run validar` (tamanho, SVG, ids e duplicatas).
-3. `git commit` + `git push` → a Vercel publica sozinha.
-
-## Rodar localmente
-
-```bash
-cp .env.example .env      # opcional: preencha para testar com o Supabase
-npm run build             # gera public/
-npx serve public          # abre em http://localhost:3000
-```
-
-Testes (baixam o Playwright na primeira vez): `npm test`.
+A biblioteca do Supabase é carregada do jsDelivr (`@supabase/supabase-js@2.117.2`).
