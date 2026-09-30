@@ -1,0 +1,102 @@
+const { C, S, ul, tb, svgFluxo } = require('./_h');
+
+module.exports = {
+  id: 'pne', nome: 'Pneumologia', ic: '🫁',
+  desc: 'TEP, intersticiais e sarcoidose, asbesto, derrame pleural, nódulo pulmonar, ABPA e distúrbios do sono.',
+  subs: [
+    S('pne-tep', 'Tromboembolismo pulmonar', [
+      C('clin', 2025, 'TEP: qual o sintoma mais comum e quantos têm a tríade clássica?',
+        'O sintoma mais comum é a <b>dispneia</b>. A minoria tem a tríade dor torácica + hemoptise + dor pleurítica.'),
+      C('angiotc', 2025, 'Qual o exame padrão-ouro atual para TEP?', '<b>AngioTC</b> (sensibilidade e especificidade &gt; 90%).'),
+      C('macico', 2025, 'Como se define TEP maciço?', 'Choque obstrutivo: <b>PAS &lt; 90 mmHg</b> ou necessidade de droga vasoativa.'),
+      C('infarto', 2025, 'Que tipo de TEP causa mais infarto pulmonar?', 'Os <b>pequenos e periféricos</b>, em ramos finos.'),
+      C('aha-mudanca', 2022, 'Qual a principal mudança da diretriz AHA/ACC 2026 no TEP?',
+        'Abandona "maciço/submaciço" e classifica em <b>categorias A a E</b>, somando hemodinâmica (<b>PAM &lt; 60</b>), disfunção de VD, biomarcadores (troponina, BNP), comprometimento respiratório e evolução. Reforça escores de exclusão (Wells, Geneva, PERC) e gravidade (PESI).'),
+      C('aha-cat', 2022, 'TEP pela AHA/ACC 2026: o que é cada categoria e qual o manejo?',
+        tb(['Cat.', 'Definição', 'Manejo'], ['A', 'Subclínico/incidental', 'Ambulatório, DOAC'], ['B', 'Sintomático, PESI baixo', 'Ambulatório, DOAC'], ['C', 'PESI alto ± VD/biomarcadores (C1–C3)', 'Internação, HBPM'], ['D', 'Colapso iminente: hipotensão transitória, choque normotenso', 'UTI, HBPM ± reperfusão'], ['E', 'Falência: choque cardiogênico, refratário, PCR', 'UTI, HBPM + <b>reperfusão</b>']) + '"R" (risco ventilatório) pode ser somado às categorias C–E.'),
+      C('aha-esc', 2022, 'Como as categorias da AHA 2026 correspondem à ESC 2019?',
+        'A e B = <b>baixo</b>. C1 e C2 = <b>intermediário-baixo</b>. C3 = <b>intermediário-alto</b>. D e E = <b>alto</b>.'),
+      C('aha-c', 2022, 'TEP categoria C: o que define C1, C2 e C3?',
+        'C1: VD <b>e</b> biomarcadores normais. C2: VD <b>ou</b> biomarcadores anormais. C3: VD <b>e</b> biomarcadores anormais.'),
+    ]),
+
+    S('pne-inters', 'Doenças intersticiais: FPI, sarcoidose e outras', [
+      C('fpi-suspeita', 2024, 'Idoso tabagista com doença intersticial basal e posterior, faveolamento e bronquiolectasias de tração: diagnóstico?',
+        '<b>Fibrose pulmonar idiopática</b> (padrão de pneumonia intersticial usual).'),
+      C('fpi-func', [2024, 2025], 'FPI: qual o padrão funcional e a evolução?',
+        '<b>Restritivo</b> com <b>DLCO reduzida</b> e hipoxemia que piora ao exercício; estertores crepitantes. Queda da CVF de <b>150–200 mL/ano</b>.'),
+      C('piu', 2024, 'Qual o padrão tomográfico da pneumonia intersticial usual e o que excluir?',
+        'Reticulado <b>periférico, basal e bilateral</b> com <b>faveolamento</b> e bronquiectasias de tração. Excluir doenças reumatológicas e <b>pneumonite de hipersensibilidade</b> (exposições).'),
+      C('fpi-tto', 2024, 'FPI: quais os antifibróticos e seus efeitos adversos?',
+        '<b>Pirfenidona</b>: fotossensibilidade, rash, enzimas hepáticas. <b>Nintedanibe</b> (inibidor de tirosina-quinase): diarreia e náuseas. Ambos reduzem a queda da CVF. Encaminhar cedo para transplante (no Brasil, até <b>65 anos</b>).'),
+      C('poc', 2024, 'Quais os achados tomográficos da pneumonia em organização criptogênica?',
+        'Consolidações irregulares, vidro fosco, pequenos nódulos e espessamento da parede brônquica.'),
+      C('bo', 2025, 'Bronquiolite obliterante: qual o padrão da espirometria?', '<b>Obstrutivo.</b>'),
+      C('sarc-estagios', 2025, 'Sarcoidose: quais os estágios radiográficos?',
+        ul('<b>I</b>: linfadenopatia hilar bilateral', '<b>II</b>: linfadenopatia + infiltrado', '<b>III</b>: só infiltrado', '<b>IV</b>: fibrose avançada')),
+      C('sarc-exames', 2025, 'Sarcoidose: quais os achados de TC, laboratório, função e biópsia?',
+        'TC: infiltrado reticulonodular <b>peribroncovascular</b>, vidro fosco. <b>ECA elevada em 60%</b>; <b>hipercalcemia e hipercalciúria</b> (vitamina D dos macrófagos). Função: restritivo com DLCO baixa. Biópsia: <b>granuloma não caseoso</b>.'),
+      C('lofgren', 2025, 'O que é a síndrome de Löfgren?',
+        '<b>Linfadenomegalia hilar + eritema nodoso + artrite de tornozelo.</b> Linfonodomegalia hilar sem derrame pleural: sempre pensar em sarcoidose.'),
+    ]),
+
+    S('pne-ocup', 'Asbesto: asbestose e mesotelioma', [
+      C('pleura', 2024, 'Doença intersticial com acometimento pleural em trabalhador da construção civil: pensar em quê?',
+        '<b>Asbestose</b> (e placas pleurais). O asbesto também causa mesotelioma e câncer de pulmão.'),
+      C('asb-tc', 2024, 'Qual a TC da asbestose e como separá-la da FPI?',
+        'Nódulos e linhas subpleurais, vidro fosco, bandas, bronquiectasias de tração, faveolamento — padrão <b>PIU</b> comum. A diferença é a <b>exposição ocupacional</b> (latência de 20–30 anos, dose-dependente) e os <b>corpos de asbesto</b> na histologia.'),
+      C('meso', 2024, 'Mesotelioma: origem, forma mais comum e principal causa?',
+        'Neoplasia de superfícies mesoteliais (pleura, peritônio, túnica vaginal, pericárdio). Mais comum: <b>pleural</b>. Principal causa: <b>asbesto</b> (~70%).'),
+    ]),
+
+    S('pne-derr', 'Derrame pleural', [
+      C('light', 2023, 'Quais os critérios de Light para exsudato?',
+        tb(['Critério', 'Exsudato se'], ['DHL líquido / DHL sérico', '&gt; 0,6'], ['Proteína líquido / proteína sérica', '&gt; 0,5'], ['DHL do líquido', '&gt; 2/3 do limite superior do sérico']) + 'Exsudato: basta <b>1 critério</b>. Transudato: os <b>3 negativos</b>.'),
+      C('maligno', 2023, 'Derrame pleural neoplásico é exsudato ou transudato?', '<b>Exsudato.</b>'),
+      C('quilo', 2023, 'Quando pensar em quilotórax?',
+        'Exsudatos têm colesterol e triglicerídeos elevados, mas geralmente <b>&lt; 250</b> e <b>&lt; 110 mg/dL</b>. Acima disso, pensar em quilotórax.'),
+    ]),
+
+    S('pne-nod', 'Nódulo pulmonar solitário', [
+      C('fluxo', 2023, 'Nódulo pulmonar sólido: qual o fluxograma do ACCP?',
+        svgFluxo('Nódulo pulmonar sólido pelo ACCP',
+          [{ x: 120, y: 4, w: 100, h: 28, t: ['NPS sólido'], cor: 'azul' },
+           { x: 8, y: 52, w: 120, h: 40, t: ['até 8 mm:', 'seguir com TC'], cor: 'claro' },
+           { x: 150, y: 52, w: 182, h: 40, t: ['maior que 8 mm: estimar', 'probabilidade de câncer'], cor: 'ouro' },
+           { x: 8, y: 112, w: 100, h: 44, t: ['muito baixa', 'TC seriada'], cor: 'verde', fs: 9 },
+           { x: 120, y: 112, w: 100, h: 44, t: ['intermediária', 'PET-CT'], cor: 'ouro', fs: 9 },
+           { x: 232, y: 112, w: 100, h: 44, t: ['alta', 'estadiar (PET)'], cor: 'verm', fs: 9 },
+           { x: 120, y: 176, w: 100, h: 44, t: ['PET positivo:', 'biópsia'], cor: 'claro', fs: 9 }],
+          [[150, 32, 68, 50], [190, 32, 241, 50], [200, 92, 58, 110], [241, 92, 170, 110], [280, 92, 282, 110], [170, 156, 170, 174]]) +
+        'Probabilidade: muito baixa &lt; 5%; intermediária 5–60%; alta &gt; 60%. PET negativo → controle com TC.'),
+      C('baixo', 2023, 'Nódulo &gt; 8 mm em paciente de baixo risco: qual o seguimento?',
+        'Jovem, não fumante, nódulo menor e regular: <b>TC a cada 3 meses</b>; se estável, repetir aos 9–12 e 18–24 meses. <b>Crescimento de 50%</b> → biópsia ou ressecção.'),
+      C('alto', 2023, 'Nódulo &gt; 8 mm em paciente de risco intermediário ou alto: qual a conduta?',
+        '<b>PET-CT.</b> SUVmax baixo → controle tomográfico; SUVmax alto → <b>biópsia</b>.'),
+      C('malig', 2023, 'Quais achados sugerem malignidade e quais sugerem benignidade no nódulo?',
+        '<b>Malignidade</b>: lobo superior, nódulo maior, irregular ou <b>espiculado</b>, único, tabagismo. <b>Benignidade</b>: <b>calcificações</b>, hamartoma típico, atelectasias reversíveis. Múltiplos nódulos → mais infeccioso/granulomatoso.'),
+    ]),
+
+    S('pne-abpa', 'Aspergilose broncopulmonar alérgica', [
+      C('lab', 2024, 'ABPA: quais os achados laboratoriais?',
+        '<b>IgE total muito elevada</b> + IgE específica para Aspergillus; dosar também <b>IgG para A. fumigatus</b>.'),
+      C('fisio', 2024, 'Por que a ABPA é mais comum na fibrose cística?',
+        'O muco espesso retém os esporos → resposta <b>Th2</b> (IL-4, IL-13, IL-5, IgE, eosinófilos); as proteases do fungo estimulam IL-8 (neutrófilos) → destruição do parênquima. Imunocomplexos ativam o complemento.'),
+      C('cortic', 2024, 'ABPA: qual o tratamento padrão e como monitorar?',
+        '<b>Prednisolona</b> 0,5–2 mg/kg/dia por 14 dias, depois em dias alternados por 6–8 semanas. Monitorar <b>IgE total a cada 6–8 semanas</b>: queda <b>≥ 35%</b> com melhora radiológica permite desmame.'),
+      C('antif', 2024, 'ABPA: quando usar antifúngico e qual?',
+        'Refratário ao corticoide, recidiva no desmame ou corticodependente com complicações. <b>Itraconazol 200 mg 2×/dia</b> por 4–6 semanas, com redução em 4–6 meses.'),
+      C('bio', 2024, 'Quais biológicos têm dados na ABPA?',
+        '<b>Omalizumabe</b> (anti-IgE, mais dados); também mepolizumabe/benralizumabe (anti-IL-5) e dupilumabe (anti-IL-4/IL-13).'),
+    ]),
+
+    S('pne-sono', 'Apneia do sono e hipoventilação da obesidade', [
+      C('aos', 2024, 'Como se define apneia obstrutiva do sono e qual o principal fator de risco?',
+        'Polissonografia com <b>IAH ≥ 5 eventos/hora</b>. Principal fator: <b>obesidade</b> (também da hipoventilação da obesidade).'),
+      C('sho', 2024, 'Síndrome de hipoventilação da obesidade: critério diagnóstico e rastreio?',
+        'Critério: <b>PaCO₂ &gt; 45 mmHg</b>. Rastreio: oximetria (SpO₂ &lt; 93% sugere) e <b>bicarbonato venoso ≥ 27 mEq/L</b> (alta sensibilidade). Depois, gasometria arterial obrigatória.'),
+      C('sho-exclusao', 2024, 'Hipoventilação: o que investigar para excluir outras causas?',
+        'Prova de função pulmonar com força muscular, RX de tórax, ECG, função tireoidiana e uso de álcool/drogas.'),
+    ]),
+  ],
+};

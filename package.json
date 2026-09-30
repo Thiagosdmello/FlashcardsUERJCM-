@@ -1,0 +1,15 @@
+{
+  "name": "flashcards-ct-uerj",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Flashcards CT dos Acadêmicos — revisão para a prova de R+ Clínica Médica da UERJ (FSRS-5, PWA, Supabase).",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "build": "node tools/build_app.js --web",
+    "build:artifact": "node tools/build_app.js",
+    "conteudo": "node tools/gen_uerj.js",
+    "validar": "node tools/validate_content.js && node tools/dup_check.js",
+    "test": "cd tests && npm install && node run_all.js",
+    "local": "npm run build && npx --yes serve public"
+  }
+}
