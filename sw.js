@@ -1,5 +1,5 @@
 // Service worker do Flashcards CT: app abre offline; a API do Supabase sempre vai à rede.
-const VERSAO = 'munwta59';
+const VERSAO = 'mvndnmy7';
 const CACHE = 'ctfc-' + VERSAO;
 const ARQUIVOS = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'];
 self.addEventListener('install', e => {
